@@ -22,8 +22,8 @@ IIS
 
 ## Запуск
 
-- git clone <curren_url> <target_dir> - клонирование репозитория
-- cd <path> - переход в папку
-- python -m venv .venv - создание виртуального окружение 
-- source .venv/bin/activate - активация вируального окружения
-- python -m pip install -r requirements.txt - установка зависимостей
+1. git clone https://github.com/Vivaldition/IIS.git
+cd IIS
+python -m venv .venv_car_price/bin/activate
+.venv_car_price\Scripts\activate
+pip install -r requirements.txt
