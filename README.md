@@ -23,7 +23,7 @@ IIS
 ## Запуск
 
 1. git clone https://github.com/Vivaldition/IIS.git
-cd IIS
-python -m venv .venv_car_price/bin/activate
-.venv_car_price\Scripts\activate
-pip install -r requirements.txt
+2. cd IIS
+3. python -m venv .venv_car_price/bin/activate
+4. .venv_car_price\Scripts\activate
+5. pip install -r requirements.txt
