@@ -8,7 +8,17 @@
 
  Цена автомобиля зависит от множества факторов, таких как репутация марки, характеристики автомобиля, мощность двигателя, пробег и многое другое. Прогнозирование цен на автомобили — одно из основных направлений исследований в области машинного обучения. <br/>
  Данный проект анправлен на прогнозирование стоимости подержанных автомобилей.
+## Структура проекта
 
+IIS
+ |_____ .venv (виртуальное окружение)
+ |_____ .git
+ |_____ data (исходные данные (.csv, .pkl))
+ |_____ eda (артефакты, связанные с разведочным анализом данных)
+    |___ eda.ipynb (блокнот с анализом данных)
+    |___ .png - картинки, полученные в ходе анализа
+ |_____ requirements.txt (файл с зависимостями)
+ |_____ README.md (описание проекта)
 
 ## Запуск
 
@@ -47,15 +57,6 @@
 
 ### 1. График распределения цен
 
-```
-plt.figure(figsize=(10, 6))  
-sns.histplot(df['Selling_Price'], kde=True, bins=30)  
-plt.title('График распределения цен на машины')  
-plt.xlabel('Цена (в lakhs)')  
-plt.ylabel('Количество машин')  
-plt.savefig('цены_машин.png', dpi=300, bbox_inches='tight')
-plt.show ()
-```
 ![image](https://github.com/Vivaldition/IIS/blob/main/eda/цены_машин.png)
 
 На данном графике представлена зависимость стоимости машин от их количества. По оси абцисс находится цена за машину, которая измеряется в "lakhs", а по оси ординат находится кол-во машин, которые продаются по определенной цене.
@@ -64,28 +65,6 @@ plt.show ()
 
 ### 2. График цена и год выпуска
 
-```
-print("ГРАФИК 2 - ЦЕНА и ГОД ВЫПУСКА")
-
-plt.figure(figsize=(12, 8))
-
-colors = {'Petrol': 'purple', 'Diesel': 'red', 'CNG': 'green'}
-for fuel_type in df['Fuel_Type'].unique():
-    subset = df[df['Fuel_Type'] == fuel_type]
-    plt.scatter(subset['Year'], subset['Selling_Price'], 
-                label=fuel_type, alpha=0.7, s=60,
-               color=colors[fuel_type])
-
-plt.title('Зависимость цены от года выпуска', fontsize=16, fontweight='bold')
-plt.xlabel('Год выпуска', fontsize=12)
-plt.ylabel('Цена продажи (lakhs)', fontsize=12)
-plt.legend(title='Тип топлива', title_fontsize=12)
-plt.grid(True, alpha=0.3)
-
-# Сохраняем график
-plt.savefig('цена и год.png', dpi=300, bbox_inches='tight')
-plt.show()
-```
 ![image](https://github.com/Vivaldition/IIS/blob/main/eda/цена%20и%20год.png)
 
 На графике представлена зависимость цены машины от года выпуска. По оси ординат находится цена за машину, которая измеряется в "lakhs", а по оси абцисс находится год выпуска машины.
@@ -94,21 +73,6 @@ plt.show()
 
 ### 3. Корреляционная матрица
 
-```
-print("ГРАФИК 3 - КОРРЕЛЯЦИОННАЯ МАТРИЦА")
-
-numeric_df = df.select_dtypes(include=[np.number])
-
-plt.figure(figsize=(10, 8))  
-
-sns.heatmap(numeric_df.corr(), 
-            annot=True,     
-            cmap='coolwarm', 
-            center=0)       
-plt.title('Корреляция между признаками')  
-plt.savefig('корреляционная_матрица.png', dpi=300, bbox_inches='tight')  
-plt.show()  
-```
 ![image](https://github.com/Vivaldition/IIS/blob/main/eda/корреляционная_матрица.png)
 
 На графике представлена тепловая карта корреляции. <br/>
@@ -119,25 +83,6 @@ plt.show()
 
 ### 4. Диаграмма Тьюки цены по типу топлива
 
-```
-print("ГРАФИК 4 - ЦЕНА ПО ТИПАМ ТОПЛИВА")
-
-plt.figure(figsize=(10, 6))
-
-sns.boxplot(x='Fuel_Type', y='Selling_Price', data=df, 
-            hue='Fuel_Type', 
-            legend=False,     
-            width=0.6,
-            palette='Set2')
-
-plt.title('Сравнение цен по типам топлива', fontsize=14)
-plt.xlabel('Тип топлива')
-plt.ylabel('Цена (lakhs)')
-plt.grid(True, alpha=0.3)
-
-plt.savefig('цена_по_типам_топлива.png', dpi=300, bbox_inches='tight')
-plt.show()
-```
 ![image](https://github.com/Vivaldition/IIS/blob/main/eda/цена_по_типам_топлива.png)
 
 Диаграмма Тьюки - 
@@ -146,37 +91,6 @@ plt.show()
 
 ### График зависимости цены от пробега автомобиля
 
-```
-print("ГРАФИК 5 - ЗАВИСИМОСТЬ ЦЕНЫ ОТ ПРОБЕГА")
-
-plt.figure(figsize=(12, 8))
-
-plt.scatter(df['Driven_kms'], df['Selling_Price'], 
-            alpha=0.6,      
-            s=50,           
-            color='blue',   
-            edgecolors='black', 
-            linewidth=0.5)  
-
-
-z = np.polyfit(df['Driven_kms'], df['Selling_Price'], 1)
-p = np.poly1d(z)
-plt.plot(df['Driven_kms'], p(df['Driven_kms']), 
-         color='red', 
-         linewidth=2, 
-         linestyle='--',
-         label='Линия тренда')
-
-plt.title('Зависимость цены автомобиля от пробега', fontsize=16, fontweight='bold')
-plt.xlabel('Пробег (км)', fontsize=12)
-plt.ylabel('Цена продажи (lakhs)', fontsize=12)
-plt.legend()
-plt.grid(True, alpha=0.3)
-
-
-plt.savefig('цена_от_пробега.png', dpi=300, bbox_inches='tight')
-plt.show()
-```
 
 ![image](https://github.com/Vivaldition/IIS/blob/main/eda/цена_от_пробега.png)
 
