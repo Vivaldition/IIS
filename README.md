@@ -33,11 +33,11 @@
 
 ## Запуск
 
-1. git clone https://github.com/Vivaldition/IIS.git
+1. git clone https://github.com/Vivaldition/IIS
 2. cd IIS
-3. python -m venv .venv_car_price_pred/bin/activate # установка окружения
-4. .venv_car_price_pred\Scripts\activate # активация окружения
-5. pip install -r requirements.txt # установка зависимостей
+3. python3 -m venv # установка окружения
+4. source .venv/bin/activate # активация окружения
+5. pip install -r requirement.txt # установка зависимостей
 
 ## Исследование данных
 Находится в ./eda/eda.ipynb.
