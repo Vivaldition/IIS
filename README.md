@@ -34,11 +34,11 @@
 
 ## Запуск
 
-1. git clone https://github.com/Vivaldition/IIS
-2. cd IIS
-3. python3 -m venv # установка окружения
-4. source .venv/bin/activate # активация окружения
-5. pip install -r requirement.txt # установка зависимостей
+```git clone https://github.com/Vivaldition/IIS```
+```cd IIS```
+```python3 -m venv # установка окружения```
+```source .venv/bin/activate # активация окружения```
+```pip install -r requirement.txt # установка зависимостей```
 
 ## Исследование данных
 Находится в ./eda/eda.ipynb.
