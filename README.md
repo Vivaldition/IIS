@@ -54,8 +54,8 @@
  │       │      ├── grafana                      
  │       │      │     ├── dashboard.json (Конфигурация дашборда Grafana)
  │       │      │     ├── Графики в grafana 1.png (Скриншот дашборда 1)
- │       │      │     ├── Графики в grafana 2.png (Скриншот дашборда 2)
- │       │      │     └── Dockerfile (Dockerfile для Grafana)
+ │       │      │     └── Графики в grafana 2.png (Скриншот дашборда 2)
+ │       │      │     
  │       │      ├── requests.py (Скрипты для тестирования запросов)
  │       │      └── Dockerfile  (Dockerfile для сервиса тестирования)
  │       |___docker-compose.yml
