@@ -1,0 +1,68 @@
+﻿services:
+  car-price-predict:
+    build: 
+      context: .  
+      dockerfile: Dockerfile
+    ports:
+      - '8000:8000'
+    volumes:
+      - './services/ml_service/model.pkl:/app/model.pkl'
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - monitoring
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  requests-service:
+    build:
+      context: ./services/requests
+      dockerfile: Dockerfile
+    environment:
+      - PREDICTION_SERVICE_URL=http://car-price-predict:8000
+    depends_on:
+      car-price-predict:
+        condition: service_healthy
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - '9090:9090'
+    volumes:
+      - './services/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  monitoring:
+    driver: bridge
