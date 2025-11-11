@@ -1,0 +1,39 @@
+artifact_path: mlflow-artifacts:/1/models/m-be8519ed389242c7b78d4048fe1ba994/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+is_signature_from_type_hint: false
+mlflow_version: 3.5.1
+model_id: m-be8519ed389242c7b78d4048fe1ba994
+model_size_bytes: 1184469
+model_uuid: m-be8519ed389242c7b78d4048fe1ba994
+prompts: null
+run_id: 604afa9bb6164f78bc2268efa58d1794
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "string", "name": "Car_Name", "required": true}, {"type": "long",
+    "name": "Year", "required": true}, {"type": "double", "name": "Present_Price",
+    "required": true}, {"type": "long", "name": "Driven_kms", "required": true}, {"type":
+    "string", "name": "Fuel_Type", "required": true}, {"type": "string", "name": "Selling_type",
+    "required": true}, {"type": "string", "name": "Transmission", "required": true},
+    {"type": "long", "name": "Owner", "required": true}, {"type": "long", "name":
+    "Car_Age", "required": true}]'
+  outputs: null
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-11-06 13:44:15.261764'
