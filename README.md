@@ -37,29 +37,29 @@
  |       |___ sfs_cols.txt (файл с названиями столбцов наиболее важных признаков)
  │
  |_____services
- │        └── ml_service                  
- │            ├── Dockerfile (Dockerfile для ML-сервиса)
- │            ├── api_handler.py (Обработчик API запросов)
- │            ├── main.py  (Основной файл FastAPI приложения)
- │            └── requirements.txt (Зависимости ML-сервиса)
+ │       |___ ml_service                  
+ │       │     ├── Dockerfile (Dockerfile для ML-сервиса)
+ │       │     ├── api_handler.py (Обработчик API запросов)
+ │       │     ├── main.py  (Основной файл FastAPI приложения)
+ │       │     └── requirements.txt (Зависимости ML-сервиса)
+ │       │
+ │       |___ models          
+ │       │     └── get_prod_model.py (Скрипт для получения продакшен модели из MLflow)
+ │       ├── prometheus                  
+ │       │     ├── prometheus.yml  (Конфигурация Prometheus)
+ │       │     ├── График в prometheus 1.png (Гистограмма предсказаний модели)
+ │       │     ├── График в prometheus 2.png (Частота запросов к сервису)
+ │       │     └── График в prometheus 3.png (Коды ошибок)
+ │       ├── requests                    
+ │       │      ├── grafana                      
+ │       │      │     ├── dashboard.json (Конфигурация дашборда Grafana)
+ │       │      │     ├── Графики в grafana 1.png (Скриншот дашборда 1)
+ │       │      │     ├── Графики в grafana 2.png (Скриншот дашборда 2)
+ │       │      │     └── Dockerfile (Dockerfile для Grafana)
+ │       │      ├── requests.py (Скрипты для тестирования запросов)
+ │       │      └── Dockerfile  (Dockerfile для сервиса тестирования)
+ │       |___docker-compose.yml
  │
- ├── models          
- │        └── get_prod_model.py (Скрипт для получения продакшен модели из MLflow)
- ├── prometheus                  
- │   ├── prometheus.yml  (Конфигурация Prometheus)
- │   ├── График в prometheus 1.png (Гистограмма предсказаний модели)
- │   ├── График в prometheus 2.png (Частота запросов к сервису)
- │   └── График в prometheus 3.png (Коды ошибок)
- │
- ├── grafana                      
- │   ├── dashboard.json (Конфигурация дашборда Grafana)
- │   ├── Графики в grafana 1.png (Скриншот дашборда 1)
- │   ├── Графики в grafana 2.png (Скриншот дашборда 2)
- │   └── Dockerfile (Dockerfile для Grafana)
- │
- └── requests                    
- │   ├── requests.py (Скрипты для тестирования запросов)
- │   └── Dockerfile  (Dockerfile для сервиса тестирования)
  |_____ .gitignore (файл с правилами проекта) 
  |_____ README.md (файл с описанием проекта) 
  |_____ requirements.txt (файл с библиотеками, использующимися в проекте)
