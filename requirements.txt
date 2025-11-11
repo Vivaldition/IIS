@@ -5,3 +5,6 @@ plotly==6.3.1
 seaborn==0.13.2
 scikit-learn==1.7.2
 mlflow==3.5.1
+optuna
+fastapi
+uvicorn
