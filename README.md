@@ -349,10 +349,25 @@ docker build . --tag car_price_model:1
 docker compose up
 ```
 
-### 2. Доступные сервисы
+### 2. Доступные сервисы после запуска
 
-- **Основной сервис**: http://localhost:8000
-- **Prometheus**: http://localhost:9090
-- **Grafana**: http://localhost:3000
+| Сервис | URL | Описание |
+|--------|-----|----------|
+| ML Service | http://localhost:8000 | REST API для предсказаний цен на автомобили |
+| Swagger UI | http://localhost:8000/docs | Интерактивная документация API |
+| Prometheus | http://localhost:9090 | Сбор и хранение метрик |
+| Grafana | http://localhost:3000 | Визуализация метрик и дашборды |
+
+---
+
+### 3. Дашборды Grafana
+
+| Панель | Метрики | Уровень | Назначение |
+|--------|---------|---------|------------|
+| Request Rate per Minute | `http_requests_total` | Прикладной | Нагрузка на API |
+| Error Rate (4xx/5xx) | `http_requests_total` | Прикладной | Стабильность сервиса |
+| Total Predictions | `predictions_total` | Качество ML | Объем работы модели |
+| Prediction Value Distribution | `model_prediction_value_bucket` | Качество ML | Распределение предсказаний |
+| CPU Usage | `process_cpu_seconds_total` | Инфраструктурный | Потребление ресурсов |
 
  
