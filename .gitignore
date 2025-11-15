@@ -4,4 +4,10 @@
 data
 *.db
 mlartifacts*
+__pycache__/
 *.pyc
+services/models/model.pkl      
+services/prometheus/data/        
+services/grafana/data/         
+services/database/data/        
+services/database/pgadmin/ 
