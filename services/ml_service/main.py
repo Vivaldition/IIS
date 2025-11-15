@@ -72,7 +72,7 @@ class PredictionResponse(BaseModel):
     model_version: str
 
 def update_system_metrics():
-    """Обновление системных метрик"""
+
     try:
         CPU_USAGE.set(psutil.cpu_percent())
         process = psutil.Process(os.getpid())
@@ -160,3 +160,4 @@ async def root():
             "predict": "/predict"
         }
     }
+
