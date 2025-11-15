@@ -3,9 +3,6 @@ import joblib
 import os
 
 def download_model():
-    """
-    Загружает модель из MLflow по run_id
-    """
     
     run_id = "a0c1e800cf7c4171847779c1deb7ca27"
     
@@ -16,17 +13,16 @@ def download_model():
         print(f"   Run ID: {run_id}")
         print(f"   Model URI: {model_uri}")
         
+        mlflow.set_tracking_uri("file:../../mlflow/mlruns")
         
         model = mlflow.sklearn.load_model(model_uri)
         
-        
-        model_path = os.path.join(os.path.dirname(__file__), "car_price_model.pkl")
+        model_path = "/app/car_price_model.pkl"
         joblib.dump(model, model_path)
         
         print(f" Модель успешно загружена и сохранена!")
         print(f" Путь: {model_path}")
         print(f" Размер файла: {os.path.getsize(model_path)} байт")
-        
         
         print(f" Тип модели: {type(model)}")
         if hasattr(model, 'feature_names_in_'):
