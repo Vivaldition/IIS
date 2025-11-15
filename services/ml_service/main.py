@@ -1,16 +1,23 @@
-﻿from fastapi import FastAPI, HTTPException, Response
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
-import pickle
+import joblib
 import numpy as np
 import pandas as pd
 import logging
-from prometheus_client import Counter, Histogram, generate_latest, REGISTRY
+from prometheus_client import Counter, Histogram, generate_latest, REGISTRY, Gauge
 import time
+import psutil
+import os
+import sys
+
+
+sys.path.append('/app/models')
+from api_handler import FastAPIHandler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Метрики Prometheus
+
 PREDICTION_HISTOGRAM = Histogram(
     'model_prediction_value',
     'Histogram of model prediction values',
@@ -34,17 +41,21 @@ ERROR_COUNTER = Counter(
     ['error_type']
 )
 
+CPU_USAGE = Gauge('process_cpu_percent', 'CPU usage percentage')
+MEMORY_USAGE = Gauge('process_memory_bytes', 'Memory usage in bytes')
+REQUEST_DURATION = Histogram('http_request_duration_seconds', 'HTTP request duration', ['endpoint'])
+PROCESS_UPTIME = Gauge('process_uptime_seconds', 'Process uptime in seconds')
+startup_time = time.time()
+
 app = FastAPI(title="Car Price Prediction Service", version="2.0")
 
-# Загрузка модели
+
 try:
-    with open('model.pkl', 'rb') as f:
-        model = pickle.load(f)
-    logger.info("Model loaded successfully")
-    logger.info(f"Model expects {model.n_features_in_} features: {getattr(model, 'feature_names_in_', 'No feature names')}")
+    model_handler = FastAPIHandler(model_path='/app/car_price_model.pkl')
+    logger.info("Model handler initialized successfully")
 except Exception as e:
-    logger.error(f"Error loading model: {e}")
-    model = None
+    logger.error(f"Error initializing model handler: {e}")
+    model_handler = None
 
 class CarFeatures(BaseModel):
     year: int
@@ -60,9 +71,26 @@ class PredictionResponse(BaseModel):
     prediction: float
     model_version: str
 
+def update_system_metrics():
+    """Обновление системных метрик"""
+    try:
+        CPU_USAGE.set(psutil.cpu_percent())
+        process = psutil.Process(os.getpid())
+        MEMORY_USAGE.set(process.memory_info().rss)
+        PROCESS_UPTIME.set(time.time() - startup_time)
+    except Exception as e:
+        logger.warning(f"Error updating system metrics: {e}")
+
 @app.middleware("http")
 async def monitor_requests(request, call_next):
+    start_time = time.time()
+    update_system_metrics()
+    
     response = await call_next(request)
+    
+    duration = time.time() - start_time
+    REQUEST_DURATION.labels(endpoint=request.url.path).observe(duration)
+    
     REQUEST_COUNTER.labels(
         method=request.method,
         endpoint=request.url.path,
@@ -78,26 +106,19 @@ async def monitor_requests(request, call_next):
 
 @app.post("/predict", response_model=PredictionResponse)
 async def predict(features: CarFeatures):
-    if model is None:
+    if model_handler is None or model_handler.model is None:
         raise HTTPException(status_code=500, detail="Model not loaded")
     
     try:
         logger.info(f"Received features: {features}")
         
-        # Создаем DataFrame с правильными именами фич которые ожидает модель
-        features_df = pd.DataFrame([[
-            features.year,           # feature1
-            features.mileage,        # feature2  
-            features.engine_volume,  # feature3
-            features.horsepower      # feature4
-        ]], columns=['feature1', 'feature2', 'feature3', 'feature4'])
         
-        logger.info(f"Prepared features for model: {features_df.values.tolist()}")
+        features_dict = features.dict()
         
-        # Получаем предсказание
-        prediction = model.predict(features_df)[0]
         
-        # Логируем метрики
+        prediction = model_handler.predict(features_dict)[0]
+        
+        
         PREDICTION_HISTOGRAM.observe(prediction)
         PREDICTION_COUNTER.inc()
         
@@ -115,11 +136,18 @@ async def predict(features: CarFeatures):
 
 @app.get("/metrics")
 async def metrics():
+    update_system_metrics()
     return Response(content=generate_latest(REGISTRY), media_type="text/plain")
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "model_loaded": model is not None, "version": "2.0"}
+    update_system_metrics()
+    return {
+        "status": "healthy", 
+        "model_loaded": model_handler is not None and model_handler.model is not None, 
+        "version": "2.0",
+        "uptime": time.time() - startup_time
+    }
 
 @app.get("/")
 async def root():
