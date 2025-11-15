@@ -302,7 +302,8 @@ uvicorn
 - В качестве источника данных (database) используется сервис Prometheus <br/>
 
 ![Дашборд Grafana 1](https://github.com/Vivaldition/IIS/blob/main/services/requests/grafana/%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA%D0%B8%20%D0%B2%20grafana%201.png) <br/>
-![Дашборд Grafana 1](https://github.com/Vivaldition/IIS/blob/main/services/requests/grafana/%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA%D0%B8%20%D0%B2%20grafana%202.png) <br/>
+![Дашборд Grafana 2](https://github.com/Vivaldition/IIS/blob/main/services/requests/grafana/%D0%93%D1%80%D0%B0%D1%84%D0%B8%D0%BA%D0%B8%20%D0%B2%20grafana%202.png) <br/>
+![Дашборд Grafana 3](https://github.com/Vivaldition/IIS/blob/main/services/requests/grafana/График%20в%20grafana%203.png) <br/>
 
 **Панели дашборда:**
 
@@ -329,6 +330,12 @@ uvicorn
 - **Метрики**: Гистограмма предсказанных цен с различными порогами (le)
 - **Назначение**: Анализ распределения результатов работы модели
 - **Уровень**: Качество ML-модели
+
+**Панель 5 - Car Price Prediction Service - CPU Usage**
+- **Визуализация: Потребление процессорного времени сервисом прогнозирования цен**
+- **Метрики: Количество секунд CPU времени, использованных процессом**
+- **Назначение: Мониторинг вычислительной нагрузки и потребления ресурсов сервисом**
+- **Уровень: Инфраструктурный**
 
 ## Запуск системы
 
