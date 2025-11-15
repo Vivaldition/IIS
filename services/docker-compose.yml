@@ -1,12 +1,13 @@
-﻿services:
+services:
   car-price-predict:
-    build: 
-      context: .  
-      dockerfile: Dockerfile
+    build:
+      context: .
+      dockerfile: services/ml_service/Dockerfile
+    image: car-price-predict:2
     ports:
       - '8000:8000'
     volumes:
-      - './services/ml_service/model.pkl:/app/model.pkl'
+      - './services/models/car_price_model.pkl:/app/car_price_model.pkl'
     environment:
       - PYTHONUNBUFFERED=1
     restart: unless-stopped
